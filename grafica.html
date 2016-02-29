@@ -1,0 +1,363 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+"http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+<head>
+<title>AppIO, PERT mobiles, like samsung, nokia, lg, sony ericsson, htc mobile website templates for free | About :: w3layouts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" charset="utf-8">
+<link href="css/style.css" media="all" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery_1.8.3.min.js"></script>
+<link rel="stylesheet" href="js/jqueryui/jquery-ui.theme.css" type="text/css" media="screen" charset="utf-8">
+<script src="js/jqueryui/jquery-ui.js"></script>
+<script src="js/funciones.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</head>
+<body>
+<script>
+var actividades;
+var tiempo;
+var valida; 
+var nombres;
+var nom_gerente;
+var nom_proyecto;
+var m_tiempo;
+var objetivo;
+var cantidad;
+var varianza;
+var probable;
+var pesimista;
+var optimista;
+var desviacion;
+var presupuesto;
+var costo;
+var id_device;
+    /**
+     * Funcion que captura las variables pasados por GET
+     * http://www.lawebdelprogramador.com/pagina.html?id=10&pos=3
+     * Devuelve un array de clave=>valor
+     */
+    function getGET()
+    {
+        // capturamos la url
+        var loc = document.location.href;
+        // si existe el interrogante
+        if(loc.indexOf('?')>0)
+        {
+            // cogemos la parte de la url que hay despues del interrogante
+            var getString = loc.split('?')[1];
+            // obtenemos un array con cada clave=valor
+            var GET = getString.split('&');
+            var get = {};
+ 
+            // recorremos todo el array de valores
+            for(var i = 0, l = GET.length; i < l; i++){
+                var tmp = GET[i].split('=');
+                get[tmp[0]] = unescape(decodeURI(tmp[1]));
+            }
+            return get;
+        }
+    }
+
+    function save()
+    { //id_device='b6bki92049jdksdk';
+      if(varianza == null)
+      { 
+          valores = { actividad: actividades, tiempo: tiempo, nombre: nombres, fecha: fecha, gerente: nom_gerente, proyecto: nom_proyecto, medida: m_tiempo, objetivo: objetivo, cantidad: cantidad, device: id_device };
+         console.log(nom_proyecto);
+        $.ajax({
+          //url: 'php/servicio.php',
+          url: 'http://www.sialen.com/webservice/servicio.php',
+          type: 'POST',
+          dataType: 'jsonp',
+          data: {ac: 'save', data: valores },
+        })
+        .done(function(result) {
+          console.log((result));
+          if(result.status == 200)
+          {
+            $('#dialog-message').hide();
+            $('#guardado').val(1);
+            $('#save_proyect').hide();
+            alert("Su proyecto se ha guardado exitosamente");
+
+          }else{
+            $('#dialog-message').show();
+          }
+          console.log(result.responseText.status);
+        })
+        .fail(function(result) {
+          console.log((result));
+          if(result.status == 200)
+          {
+            $('#dialog-message').hide();
+            $('#guardado').val(1);
+            $('#save_proyect').hide();
+            alert("Su proyecto se ha guardado exitosamente");
+
+          }else{
+            $('#dialog-message').show();
+          }
+        });
+      }else{
+          valores = { actividad: actividades, tiempo: tiempo, nombre: nombres, fecha: fecha, gerente: nom_gerente, proyecto: nom_proyecto, medida: m_tiempo, objetivo: objetivo, cantidad: cantidad, varianza: varianza, probable: probable, pesimista: pesimista, optimista: optimista, desviacion: desviacion, presupuesto: presupuesto, costo: costo, device: id_device };
+         //console.log(device);
+        $.ajax({
+          //url: 'php/servicio.php',
+          url: 'http://www.sialen.com/webservice/servicio.php',
+          type: 'POST',
+          dataType: 'jsonp',
+          data: {ac: 'save_a', data: valores },
+        })
+        .done(function(result) { 
+          console.log((result));
+          if(result.status == 200)
+          {
+            $('#dialog-message').hide();
+            $('#guardado').val(1);
+            $('#save_proyect').hide();
+            alert("Su proyecto se ha guardado exitosamente");
+
+          }else{
+            $('#dialog-message').show();
+          }
+          console.log(result.responseText.status);
+
+        })
+        .fail(function(result) { 
+          console.log((result));
+          if(result.status == 200)
+          {
+            $('#dialog-message').hide();
+            $('#guardado').val(1);
+            $('#save_proyect').hide();
+            alert("Su proyecto se ha guardado exitosamente");
+
+          }else{
+            $('#dialog-message').show();
+          }
+          console.log(result.responseText);
+        });
+      }
+      
+    }
+  
+    function salir()
+    {
+      
+      if($('#guardado').val() == 0)
+      {
+        var r = confirm("Si selecciona Salir, puede perder todos los cambios realizados. Desea Continuar?");
+        if (r == true) {
+            window.location="menu_pert.html";
+        } else {
+          return false;          
+        };
+        
+        return false;
+      }else{
+        window.location="menu.html";
+      }
+    }
+
+    window.onload = function()
+    {
+        // Cogemos los valores pasados por get
+        var valores   =getGET();
+        actividades   = JSON.parse(localStorage["actividad"]);
+        tiempo        = JSON.parse(localStorage["tiempo"]);
+        valida        = JSON.parse(localStorage["validacion"]);
+        nombres       = JSON.parse(localStorage["nombre"]);
+        fecha         = JSON.parse(localStorage["fecha"]);
+        nom_gerente   = localStorage["n_gerente"];
+        nom_proyecto  = localStorage["n_proyecto"];
+        m_tiempo      = localStorage["m_tiempo"];
+        objetivo      = localStorage["objetivo"];
+        cantidad      = localStorage["cantidad"];
+        varianza      = JSON.parse(localStorage["varianza"]);
+        probable      = JSON.parse(localStorage["probable"]);
+        pesimista     = JSON.parse(localStorage["pesimista"]);
+        optimista     = JSON.parse(localStorage["optimista"]);
+        desviacion    = JSON.parse(localStorage["desviacion"]);
+        presupuesto   = JSON.parse(localStorage["presupuesto"]);
+        costo         = JSON.parse(localStorage["costo"]);
+        id_device     = localStorage["id_device"];
+        if(localStorage['id_proyecto'] != 'null'){
+          $('#save_proyect').hide();
+          $('#guardado').val(1);
+        }
+    }
+    </script>
+ 
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1.1", {packages:["gantt"]});
+    google.setOnLoadCallback(drawChart);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawChart() {
+      var f = new Date();
+      var dia = 0;
+      var mes = 0;
+      var anio = 0;
+      dia = parseInt(f.getDate());
+      mes = parseInt(f.getMonth());
+      anio = parseInt(f.getFullYear());
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', null);
+      data.addColumn('date', null);
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', null);
+      data.addColumn('string', 'Dependencies');
+      console.log(actividades);
+      console.log(tiempo);
+      console.log(nombres);
+      console.log(valida);
+      var datos = {};
+      var arreglo = Array();
+      for (var i = 0 ; i < actividades.length; i++) {
+
+        if(actividades[i]['antec'] == '')
+        {
+          var predecesor = null;
+        }else
+        {
+          var predecesor = ""+actividades[i]['antec']+"";
+        }
+        var tiempo_final = parseInt(tiempo[i]['tiempo']);
+        var nombre_final = nombres[i]['nombre'];        
+        data_final = [
+                ""+(i+1)+"" ,
+                ""+nombre_final+"",
+                null,
+                null,
+                daysToMilliseconds(tiempo_final) ,
+                100,
+                predecesor
+                ];
+        data.addRow(data_final);
+      };
+      var myArr = JSON.stringify(arreglo);
+      var myObj = {
+          arreglo
+      };
+
+      var array = $.map(myObj, function(value, index) {
+          return [value];
+      });
+
+      fecha_separadas = fecha.split("-");
+
+      console.log(fecha_separadas);
+      console.log(array);
+      g_dia = parseInt(fecha_separadas[2]);
+      g_mes = parseInt(fecha_separadas[1]);
+      g_anio = parseInt(fecha_separadas[0]);
+
+      console.log(new Date ( g_anio , g_mes , g_dia));
+
+      var options = {
+        height: 250,
+        //width: 800,
+        is3D: true,
+        gantt:{shadowEnabled:true,
+	        	barHeight:10,
+	        	barCornerRadius:15,
+            shadowOffset:2,
+	        	percentEnabled:false,
+	        	criticalPathEnabled: true,
+	            criticalPathStyle: {
+              	stroke: '#e64a19',
+              	strokeWidth: 2,
+              	defaultStartDate:new Date ( g_anio , g_mes , g_dia),
+              	labelMaxWidth:100
+            },
+        	arrow:{angle: 100,
+              width: 2,
+              color: 'green',
+              radius: 0},
+          	innerGridTrack: {fill: '#E3F7CE'},
+  			innerGridDarkTrack: {fill: '#E3F7CE'}  
+        }              
+      };
+
+      var chart = new google.visualization.GanttChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+      //var selection = chart.getSelection();
+
+    }
+  </script>
+<div class="wrap">   	
+  <div class="header">
+	<div class="header-top">	
+	        <div class="logo">
+				<a href="index.html"><img src="images/logo.png" alt=""/></a>
+			</div>			
+			<div class="clear"></div> 
+	  </div>
+	<div class="header-bottom">
+		<div id="cssmenu">
+		 	<ul>
+			   <li class="active"><a href="index.html"><span>Inicio</span></a></li>
+			   <li><a href="menu_pert.html"><span>Regresar</span></a></li>
+		   	</ul>
+		</div>
+		<div class="clear"></div> 
+	  </div>
+	</div>
+ <div class="main">
+ 	<div class="top-box">
+	    <div class="content-top">
+			  <div class="about-grids">
+					<div class="about-grid">
+						<h3>Diagrama Pert-CPM</h3>
+						<p>A continuación puedes observar el diagrama PERT de acuerdo a la información que ingresaste, tienes la opción de guardar el proyecto, más adelante puedes volver a ver el resultado.</p>
+					</div>
+					<div class="about-grid center-grid1">
+						  <div id="grafica"><div id="chart_div"></div></div>
+					</div>	
+					<div id="info_graf" class="botones" style="margin-right: 10%;">
+						<div>
+							<input type="button" id="exit_proyect" value="Salir" class="submit" onClick="javascript:salir();"/>
+							<input type="button" id="save_proyect" value="Guardar" class="submit" onClick="javascript:save();" />
+						</div>					
+				  	</div>
+				  	<input type="hidden" name="guardado" id="guardado" value="0">				
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+	   <div class="copy">
+			<p> © 2016 All rights Reserved | Design by <a href="http://sialen.com">Sialen Ingenieros</a></p>
+		</div>
+		<ul class="follow_icon">
+		   <li><a href="#" style="opacity: 1;"><img src="images/fb.png" alt=""></a></li>
+		   <li><a href="#" style="opacity: 1;"><img src="images/tw.png" alt=""></a></li>
+		   <li><a href="#" style="opacity: 1;"><img src="images/rss.png" alt=""></a></li>
+		   <li><a href="#" style="opacity: 1;"><img src="images/g+.png" alt=""></a></li>
+		</ul>
+		<div class="clear"></div> 
+	 </div>
+</div>
+
+<div id="dialog-message" title="Upsss…. Algo salió mal al guardar" style="display:none;">Upsss&hellip;. Algo sali&oacute; mal al guardar</div>
+</body>
+</html>
+
+    	
+    	
+            
